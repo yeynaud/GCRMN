@@ -41,17 +41,19 @@ ExtractGCRMNbenthos=function(nameCover='group',perisland=TRUE,nacover=TRUE,Group
     #return(mean(sapply(split(unfactor(X$Biomass),as.character(X$TransID)),sum)))
     if(length(unlist(X))){
       if(!is.null(nrow(X))){
-        x1=with(X, aggregate(unfactor(cover),list(Site_name,Island,Region,Country,Year,TransID),sum))
-        names(x1)=c('Site_name','Island','Region','Country','Year','TransID','Cover')
-        x2=with(x1, aggregate(unfactor(Cover),list(Site_name,Island,Region,Country,Year),mean))
-        names(x2)=c('Site_name','Island','Region','Country','Year','Cover')
+        if(is.na(X$SampMethod[1])){X$SampMethod='Unknown'}
+        x1=with(X, aggregate(unfactor(cover),list(DatasetID,SampMethod,Site_name,Island,Region,Country,Year,TransID),sum))
+        names(x1)=c('Monitor_program','Sampling_Method','Site_name','Island','Region','Country','Year','TransID','Cover')
+        x2=with(x1, aggregate(unfactor(Cover),list(Monitor_program,Sampling_Method,Site_name,Island,Region,Country,Year),mean))
+        names(x2)=c('Monitor_program','Sampling Method','Site_name','Island','Region','Country','Year','Cover')
         return(x2)
       }
       if(is.null(nrow(X))){
-        z=c(as.character(X$Site_name),as.character(X$Island),as.character(X$Region),
+        if(is.na(X$SampMethod[1])){X$SampMethod='Unknown'}
+        z=c(as.character(X$DatasetID),as.character(X$SampMethod),as.character(X$Site_name),as.character(X$Island),as.character(X$Region),
             as.character(X$Country),as.character(X$Year),as.character(X$cover))
         
-        names(z)=c('Site_name','Island','Region','Country','Year','Cover')
+        names(z)=c('Monitor_program','Sampling_Method','Site_name','Island','Region','Country','Year','Cover')
         return(data.frame(t(z),row.names = NULL))
       }}
   }
@@ -163,14 +165,15 @@ ExtractGCRMNbenthos=function(nameCover='group',perisland=TRUE,nacover=TRUE,Group
       final=final[-which(is.na(final$cover)),]
     }
   }
+  
   splitted=split(final, final$SurveyID)
   cat('I am now creating independent data points',fill=TRUE)
   cestbeau=do.call(rbind,lapply(splitted,aggregatorcover))
   #names(cestbeau)=c('Country','Region','Island','Year',paste(nameBiomass,' Biomass',sep=''))
   if(perisland==TRUE){
     cat('I am now creating means for each island',fill=TRUE)
-    cestbeau=with(cestbeau, aggregate(Cover,list(Country,Region,Island,Year),mean))
-    names(cestbeau)=c('Country','Region','Island','Year',paste(nameCover,' Cover',sep=''))
+    cestbeau=with(cestbeau, aggregate(Cover,list(Monitor_program,Sampling_Method,Site_name,Island,Region,Country,Year),mean))
+    names(cestbeau)=c('Monitor_program','Sampling_Method','Site_name','Island','Region','Country','Year',paste(nameCover,' Cover',sep=''))
   }
   
   return(cestbeau)
@@ -178,7 +181,7 @@ ExtractGCRMNbenthos=function(nameCover='group',perisland=TRUE,nacover=TRUE,Group
 }
 
 
-test=ExtractGCRMNbenthos(nameCover = 'Coral',Group = 'coral')
+test=ExtractGCRMNbenthos(nameCover = 'Coral',Group = 'coral',perisland = FALSE)
 
 
 # per ile
