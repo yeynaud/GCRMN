@@ -38,9 +38,9 @@ names(tt)=c( "fun","gen","genus","low")
 ##############################################################################################################
 
 
-rawdatalist=dir('Rawdata/')
+rawdatalist=dir('/Users/yoaneynaud/Documents/Charlotte/GCRMN/Rawdata/')
 
-legendfish=read.csv('AdditionalFiles/TaxaFishComplete.csv',sep=';',header=T)
+legendfish=read.csv('/Users/yoaneynaud/Documents/Charlotte/GCRMN/AdditionalFiles/TaxaFishComplete.csv',sep=';',header=T)
 legendbenthos=read.csv('/Users/yoaneynaud/Documents/Charlotte/GCRMN/AdditionalFiles/TaxaCompleteGroup.csv',sep=';',header=T)
 
 benthic=0
@@ -52,7 +52,7 @@ invert=0
 for(i in 1:length(rawdatalist)){
   cat(i,fill=T)
   # reading the original file
-  test=read.csv(paste('Rawdata/',rawdatalist[i],sep=''),header=T,sep=';')
+  test=read.csv(paste('/Users/yoaneynaud/Documents/Charlotte/GCRMN/Rawdata/',rawdatalist[i],sep=''),header=T,sep=';')
   
   
   # benthic files
@@ -122,13 +122,17 @@ for(i in 1:length(rawdatalist)){
       return(do.call(rbind,lapply(split(Y,Y$SurveyID) ,mastermind)))}
     bbb=communitycheck(test)
     
-    write.csv(bbb,paste('OrganizeData/Benthic_',benthic,'_',unlist(strsplit(rawdatalist[i],'.csv'))[1],'.csv',sep=''),row.names = FALSE)
+    write.csv(bbb,paste('/Users/yoaneynaud/Documents/Charlotte/GCRMN/OrganizeData/Benthic_',benthic,'_',unlist(strsplit(rawdatalist[i],'.csv'))[1],'.csv',sep=''),row.names = FALSE)
   }
-  if(0){
+  
+ 
     # fish files
     if(length(which(colnames(test)=='Biomass'))){
+      
       fish=fish+1
       taxon=test$Taxon
+      existing_bio=which(!is.na(test$Biomass))
+      if(length(which(!is.na(test$Biomass)))){cat(rawdatalist[i],fill=T)}
       test=test[,-c(1,3,5,6,7,8,12,36,39,40,41,42)]
       
       test=data.frame(foreach(j=unique(as.character(taxon)),.combine=rbind)%do%{
@@ -145,14 +149,18 @@ for(i in 1:length(rawdatalist)){
       test$calculated_biomass=is.na(test$Biomass)&!is.na(test$Size)
       where=which(is.na(test$Biomass)&!is.na(test$Size))
       test$Biomass[where]=test$Abundance[where]*unfactor(test$a[where])*unfactor(test$Size[where])^(unfactor(test$b[where]))
-      write.csv(test,paste('OrganizeData/Fish_',fish,'_',rawdatalist[i],'.csv',sep=''),row.names = FALSE)
+      write.csv(test,paste('/Users/yoaneynaud/Documents/Charlotte/GCRMN/OrganizeData/Fish_',fish,'_',unlist(strsplit(rawdatalist[i],'.csv'))[1],'.csv',sep=''),row.names = FALSE)
+      
+      
     }
-    
+  
+  
+  if(1){
     # invert files
     if(length(which(colnames(test)=='abundance'))){
       invert=invert+1
-      write.csv(test,paste('OrganizeData/Invert_',invert,'_',rawdatalist[i],'.csv',sep=''),row.names = FALSE)}
-  }
+      write.csv(test,paste('/Users/yoaneynaud/Documents/Charlotte/GCRMN/OrganizeData/Invert_',invert,'_',unlist(strsplit(rawdatalist[i],'.csv'))[1],'.csv',sep=''),row.names = FALSE)
+  }}
   rm(test)
   rm(bbb)
   gc()
