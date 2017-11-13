@@ -5,6 +5,38 @@ unfactor=function(X){return(as.numeric(as.character(X)))}
 
 setwd('/Users/yoaneynaud/Documents/Charlotte/GCRMN/')
 
+setwd('/Users/yoaneynaud/Documents/Charlotte/GCRMN/Rawdata/')
+rawdatalist=dir()
+
+verif=data.frame(foreach(i=rawdatalist,.combine=rbind)%do%{
+  cat(i,fill=T)
+  b=read.csv(i,sep=';')
+  if(length(which(colnames(b)=='cover'))){
+    tocheck=unique(as.character(unique(b$DataLevel)))
+    ppp=foreach(p=tocheck,.combine=rbind)%do%{
+      if(length(which(b$DataLevel==p))!=0){
+        cbind(p,unique(as.character(b$taxon[which(b$DataLevel==p)])))
+      }
+    }
+    colnames(ppp)=c('level','labels')
+  }
+  rm(b)
+  gc()
+  ppp
+})
+bb=split(verif$labels,verif$level)
+tt=list()
+foreach(p=bb)%do%{
+  if(length(p)){
+    tt[[length(tt)+1]]=unique(p)
+  }
+}
+
+names(tt)=c( "fun","gen","genus","low")
+
+##############################################################################################################
+##############################################################################################################
+
 
 rawdatalist=dir('Rawdata/')
 
@@ -14,6 +46,8 @@ legendbenthos=read.csv('/Users/yoaneynaud/Documents/Charlotte/GCRMN/AdditionalFi
 benthic=0
 fish=0
 invert=0
+
+##############################################################################################################
 
 for(i in 1:length(rawdatalist)){
   cat(i,fill=T)
@@ -124,11 +158,8 @@ for(i in 1:length(rawdatalist)){
   gc()
 }
 
-
-
-
-
-
+##############################################################################################################
+##############################################################################################################
 
 
 setwd('/Users/yoaneynaud/Documents/Charlotte/GCRMN/OrganizeData/')
