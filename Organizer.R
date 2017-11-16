@@ -1,6 +1,6 @@
-require(foreach)
 
-unfactor=function(X){return(as.numeric(as.character(X)))}
+
+
 
 
 setwd('/Users/yoaneynaud/Documents/Charlotte/GCRMN/')
@@ -48,8 +48,11 @@ fish=0
 invert=0
 
 ##############################################################################################################
+require(foreach)
+unfactor=function(X){return(as.numeric(as.character(X)))}
 
 for(i in 1:length(rawdatalist)){
+  
   cat(i,fill=T)
   # reading the original file
   test=read.csv(paste('/Users/yoaneynaud/Documents/Charlotte/GCRMN/Rawdata/',rawdatalist[i],sep=''),header=T,sep=';')
