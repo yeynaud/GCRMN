@@ -28,7 +28,7 @@ source('ExtractGCRMNbenthos.R')
 ## here you can play and extract what you want and then save it as a csv etc.
 ## 'nameCover': it is the name of the last column
 ## 'Group': What group, Region, Island etc. are you interested in ? just put one 
-#   or multiple arguments for what you would like to extract
+#   or multiple arguments for what you would like to extract - OPEN THE FUNCTION TO SEE ALL POSSIBLE ARGUMENTS
 ############# here is an example for the group 'coral' ########################
 test1=ExtractGCRMNbenthos(nameCover = 'Coral',Group = 'coral',perisland = TRUE)
 ############# here is an example for the group 'macroalgae' ########################
