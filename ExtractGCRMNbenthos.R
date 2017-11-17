@@ -29,7 +29,8 @@ ExtractGCRMNbenthos=function(nameCover='group',perisland=TRUE,nacover=TRUE,Group
   whereisit=function(keywords){
     if(!is.null(nrow(keywords))){
       where=unique(foreach(i=nrow(keywords),.combine=c)%do%{
-        key=keywords[i,]
+        #key=keywords[i,]
+        key=unlist(strsplit(keywords[i,],' '))
         res=table(foreach(cherche=key,.combine=c)%do%{
           lecheck=function(x){if(length(which(x==cherche))!=0){return(TRUE)}else{return(FALSE)}} 
           
