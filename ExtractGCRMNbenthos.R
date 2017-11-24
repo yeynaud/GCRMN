@@ -143,8 +143,8 @@ ExtractGCRMNbenthos=function(nameCover='group',perisland=TRUE,nacover=TRUE,Group
   
   if(perisland==TRUE){
     cat('I am now creating means for each island',fill=TRUE)
-    cestbeau=with(cestbeau, aggregate(Cover,list(Monitor_program,Sampling_Method,Site_name,Island,Region,Country,Year),mean))
-    names(cestbeau)=c('Monitor_program','Sampling_Method','Site_name','Island','Region','Country','Year',paste(nameCover,' Cover',sep=''))
+    cestbeau=with(cestbeau, aggregate(Cover,list(Monitor_program,Sampling_Method,Island,Region,Country,Year),mean))
+    names(cestbeau)=c('Monitor_program','Sampling_Method','Island','Region','Country','Year',paste(nameCover,' Cover',sep=''))
   }
   cat('I am done, enjoy !',fill=TRUE)
   return(cestbeau)
